@@ -147,7 +147,8 @@
  * (CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR * 512)), but the value will be used
  * directly in a makefile, without the preprocessor expansion.
  */
-#define CONFIG_BOARD_SIZE_LIMIT		0x7e000
+/* #define CONFIG_BOARD_SIZE_LIMIT		0x7e000 */
+#define CONFIG_BOARD_SIZE_LIMIT		0xFB000
 #endif
 
 #if CONFIG_MMC_SUNXI_SLOT_EXTRA != -1
