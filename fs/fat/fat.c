@@ -320,6 +320,8 @@ static int get_contents(fsdata *mydata, dir_entry *dentptr, loff_t pos,
 	*gotsize = 0;
 	debug("Filesize: %llu bytes\n", filesize);
 
+printf("Filesize: %llu bytes\n", filesize);
+
 	if (pos >= filesize) {
 		debug("Read position past EOF: %llu\n", pos);
 		return 0;
@@ -379,6 +381,10 @@ static int get_contents(fsdata *mydata, dir_entry *dentptr, loff_t pos,
 		/* search for consecutive clusters */
 		while (actsize < filesize) {
 			newclust = get_fatent(mydata, endclust);
+
+			if (actsize % (100 * bytesperclust) == 0) putc('#');
+			if ((actsize >= (bytesperclust * 100 * 60)) && (actsize % (100 * 60 * bytesperclust) == 0)) putc('\n');
+
 			if ((newclust - 1) != endclust)
 				goto getit;
 			if (CHECK_CLUST(newclust, mydata->fatsize)) {
@@ -396,7 +402,11 @@ static int get_contents(fsdata *mydata, dir_entry *dentptr, loff_t pos,
 			printf("Error reading cluster\n");
 			return -1;
 		}
+
 		*gotsize += actsize;
+
+		putc('\n');
+
 		return 0;
 getit:
 		if (get_cluster(mydata, curclust, buffer, (int)actsize) != 0) {
@@ -406,7 +416,6 @@ getit:
 		*gotsize += (int)actsize;
 		filesize -= actsize;
 		buffer += actsize;
-
 		curclust = get_fatent(mydata, endclust);
 		if (CHECK_CLUST(curclust, mydata->fatsize)) {
 			debug("curclust: 0x%x\n", curclust);
