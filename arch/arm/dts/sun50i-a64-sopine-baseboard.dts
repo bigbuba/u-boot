@@ -70,11 +70,11 @@
 };
 
 &ehci0 {
-	status = "okay";
+	status = "disabled";
 };
 
 &ehci1 {
-	status = "okay";
+	status = "disabled";
 };
 
 &emac {
@@ -105,11 +105,11 @@
 };
 
 &ohci0 {
-	status = "okay";
+	status = "disabled";
 };
 
 &ohci1 {
-	status = "okay";
+	status = "disabled";
 };
 
 &reg_dc1sw {
