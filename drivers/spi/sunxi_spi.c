@@ -61,9 +61,10 @@ static int _sunxi_spi_xfer(struct sunxi_spi_reg* spi, unsigned int bitlen,
 	u8 *p_outbuf = (u8*)dout;
 	u8 *p_inbuf = (u8*)din;
 	unsigned char* p;
+
 #ifdef CONFIG_SPL_BUILD
 
-	printf("_sunxi_spi_xfer %p\n", spi);
+	debug("_sunxi_spi_xfer %p\n", spi);
 #endif
 	debug("%s: %p, %d, %p, %016lx\n", __func__, spi, bitlen, din, flags);
 
@@ -97,8 +98,8 @@ static int _sunxi_spi_xfer(struct sunxi_spi_reg* spi, unsigned int bitlen,
 
 		setbits_le32(&spi->TCR, (1 << 31)); // XCHG bit
 
-		while (readl(&spi->TCR) & (1 << 31))
-			/* wait for the xfer to complete */;
+		while (readl(&spi->TCR) & (1 << 31)) udelay(10);
+			/* wait for the xfer to complete */
 
 		setbits_le32(&spi->ISR, (1 << 12)); // clear TC
 		cnt = blk_size;
@@ -125,7 +126,7 @@ static int _sunxi_spi_xfer(struct sunxi_spi_reg* spi, unsigned int bitlen,
 		setbits_le32(&spi->TCR, (1 << 6));  // SS_OWNER
 		setbits_le32(&spi->TCR, (1 << 7));  // SS_LEVEL
 	}
-	udelay(1);
+	udelay(10);
 
 #ifdef CONFIG_SPL_BUILD
 #if 0
@@ -327,7 +328,6 @@ static int sunxi_spi_init(struct udevice *dev) {
 
 static int sunxi_spi_probe(struct udevice *dev) {
 	debug("%s: %p\n", __func__, dev);
-	printf("*** sunxi_spi_probe ***\n");
 	if (!dev)
 		return -ENODEV;
 
@@ -419,7 +419,6 @@ static int sunxi_spi_claim_bus(struct udevice *dev) {
 	setbits_le32(&spi->TCR, priv->clk_pol | priv->clk_pha);
 
 	udelay(10);
-
 	return 0;
 };
 
