@@ -55,6 +55,7 @@
 	aliases {
 		ethernet0 = &emac;
 		serial0 = &uart0;
+		spi0 = &spi0;
 	};
 
 	chosen {
@@ -142,9 +143,21 @@
 
 &usb_otg {
 	dr_mode = "host";
-	status = "okay";
+	status = "disabled";
 };
 
 &usbphy {
+	status = "disabled";
+};
+
+&spi0 {
 	status = "okay";
+
+	flash0: w25q8128@0 {
+                compatible = "winbond,w25q128";
+		/* compatible = "spi-flash"; */
+                reg = <0>;
+                spi-max-frequency = <16000000>;
+		status = "okay";
+        };
 };
