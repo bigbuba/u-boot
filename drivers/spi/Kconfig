@@ -159,6 +159,13 @@ config SANDBOX_SPI
 		};
 	  };
 
+config SUNXI_SPI
+        bool "SUNXI SPI driver"
+        help
+          Enable the sunxi SPI driver. This driver can be used to
+          access the SPI NOR flash on platforms embedding the Allwinner
+          sunxi SoC.
+
 config STM32_QSPI
 	bool "STM32F7 QSPI driver"
 	depends on STM32F7
