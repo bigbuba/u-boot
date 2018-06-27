@@ -310,7 +310,7 @@ static int sunxi_spi_ofdata_to_platdata(struct udevice *dev) {
 	plat->base = (void*)addr;
 	plat->max_hz = fdtdec_get_int(blob, node, "spi-max-frequency", 24000000);
 
-	debug("%s: base=%p, max-frequency=%d size=%d\n",
+	debug("%s: base=%p, max-frequency=%d size=%lld\n",
 	      __func__, plat->base, plat->max_hz, size);
 
 	return 0;
