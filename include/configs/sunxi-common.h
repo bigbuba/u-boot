@@ -15,6 +15,8 @@
 #include <asm/arch/cpu.h>
 #include <linux/stringify.h>
 
+#define CONFIG_ENV_SECT_SIZE	(4 << 10) /* 4 KB sectors */
+
 #ifdef CONFIG_OLD_SUNXI_KERNEL_COMPAT
 /*
  * The U-Boot workarounds bugs in the outdated buggy sunxi-3.4 kernels at the
