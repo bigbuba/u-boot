@@ -35,8 +35,8 @@ cat << __HEADER_EOF
 			type = "firmware";
 			arch = "arm64";
 			compression = "none";
-			load = <0x44000>;
-			entry = <0x44000>;
+			load = <0x20000>;
+			entry = <0x20000>;
 		};
 __HEADER_EOF
 
