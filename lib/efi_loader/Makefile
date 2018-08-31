@@ -6,6 +6,9 @@
 # This file only gets included with CONFIG_EFI_LOADER set, so all
 # object inclusion implicitly depends on it
 
+CFLAGS_efi_boottime.o += \
+  -DFW_VERSION="0x$(VERSION)" \
+  -DFW_PATCHLEVEL="0x$(PATCHLEVEL)"
 CFLAGS_helloworld.o := $(CFLAGS_EFI) -Os -ffreestanding
 CFLAGS_REMOVE_helloworld.o := $(CFLAGS_NON_EFI) -Os
 
@@ -22,4 +25,5 @@ obj-$(CONFIG_LCD) += efi_gop.o
 obj-$(CONFIG_DM_VIDEO) += efi_gop.o
 obj-$(CONFIG_PARTITIONS) += efi_disk.o
 obj-$(CONFIG_NET) += efi_net.o
+obj-$(CONFIG_GENERATE_ACPI_TABLE) += efi_acpi.o
 obj-$(CONFIG_GENERATE_SMBIOS_TABLE) += efi_smbios.o

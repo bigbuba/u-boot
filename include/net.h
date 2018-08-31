@@ -164,7 +164,7 @@ void eth_halt_state_only(void); /* Set passive state */
 
 #ifndef CONFIG_DM_ETH
 struct eth_device {
-#define ETH_NAME_LEN 16
+#define ETH_NAME_LEN 20
 	char name[ETH_NAME_LEN];
 	unsigned char enetaddr[ARP_HLEN];
 	phys_addr_t iobase;
@@ -344,6 +344,7 @@ struct vlan_ethernet_hdr {
 
 #define PROT_IP		0x0800		/* IP protocol			*/
 #define PROT_ARP	0x0806		/* IP ARP protocol		*/
+#define PROT_WOL	0x0842		/* ether-wake WoL protocol	*/
 #define PROT_RARP	0x8035		/* IP ARP protocol		*/
 #define PROT_VLAN	0x8100		/* IEEE 802.1q protocol		*/
 #define PROT_IPV6	0x86dd		/* IPv6 over bluebook		*/
@@ -535,10 +536,12 @@ extern int		net_restart_wrap;	/* Tried all network devices */
 
 enum proto_t {
 	BOOTP, RARP, ARP, TFTPGET, DHCP, PING, DNS, NFS, CDP, NETCONS, SNTP,
-	TFTPSRV, TFTPPUT, LINKLOCAL, FASTBOOT
+	TFTPSRV, TFTPPUT, LINKLOCAL, FASTBOOT, WOL
 };
 
 extern char	net_boot_file_name[1024];/* Boot File name */
+/* Indicates whether the file name was specified on the command line */
+extern bool	net_boot_file_name_explicit;
 /* The actual transferred size of the bootfile (in bytes) */
 extern u32	net_boot_file_size;
 /* Boot file size in blocks as reported by the DHCP server */
@@ -835,6 +838,20 @@ ushort env_get_vlan(char *);
 
 /* copy a filename (allow for "..." notation, limit length) */
 void copy_filename(char *dst, const char *src, int size);
+
+/* check if serverip is specified in filename from the command line */
+int is_serverip_in_cmd(void);
+
+/**
+ * net_parse_bootfile - Parse the bootfile env var / cmd line param
+ *
+ * @param ipaddr - a pointer to the ipaddr to populate if included in bootfile
+ * @param filename - a pointer to the string to save the filename part
+ * @param max_len - The longest - 1 that the filename part can be
+ *
+ * return 1 if parsed, 0 if bootfile is empty
+ */
+int net_parse_bootfile(struct in_addr *ipaddr, char *filename, int max_len);
 
 /* get a random source port */
 unsigned int random_port(void);
